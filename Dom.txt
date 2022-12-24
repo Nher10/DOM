@@ -1,0 +1,467 @@
+1. DOM 
+    - is a cross-platform and language independent model for representing and interacting with elements in html documents
+
+    - neither part of html nor part of javascript
+
+    DOM represent a family tree 
+    from parent - child amd siblings
+
+2. SELECTING AND MANIPULATING INDIVIDUAL elements
+
+    1. getElementsById('id)
+        - returns the element that has the ID attribute with specified value
+
+        at console
+
+        const el = document.getElementById('list')
+        // undefined - because we only stored the elements in the variable on the fly
+                 - it is the default temporary value for the variables
+
+        el
+        // we get the same ul element
+        typeof el 
+        // 'object' - everything is an object
+
+        if there are more than one id attributes the first element with that id will get first
+
+        const el = document.getElementById('LIST)
+        //null
+
+        el
+        // null - because the engine doesnt find that id
+
+
+        PROPERTIES OF DOM
+
+        .textContent
+            - The textContent property sets or returns the textual content of the specified node, and all its descendants
+
+            * using textContent property, any child nodes are removed and replace by single Text node
+
+            const el = document.getElementById('list')
+
+            el.textContent = 'Hello'
+
+            // the content of the list turns into single text node 'Hello'
+
+            at html
+
+            <h2 id="heading">Heading</h2>
+
+            at console
+
+            const heading = document.getElementById('heading').textContent
+
+            //undefined
+
+            heading
+
+            // 'Heading'
+
+            const Ulelement = document.getElementById('list')
+            //undefined
+
+            Ulelement.textContent = heading
+
+            // the content of the list turns into 'Heading'
+
+        .innerHTML 
+            - the innerHTML property sets or returns the HTML content of an element
+
+            * returns the whole HTML content including tags, attributes and text nodes as a string
+
+            const el = document.getElementById('list')
+            //undefined
+
+            el.innerHTML
+            // returns the HTML content of the list
+
+            el.innerHTML = '<h1>Hello</h1>'
+            // returns in html document the attribute h1 
+
+            el.textContent = '<h1>Hello</h1>'
+            // returns '<h1>Hello</h1>' as single text node
+
+
+    2. querySelector('selector')
+        - returns the first element that matches a specified CSS selector in the document
+
+        * String argument always must to follow CSS syntax
+
+        it works in the same way as getElementById by id the only difference is not only the selector we can select but also the id and class using . and # respectively
+
+        ('ul li') - for example as it was incase of parent and child rel.
+        ('ul li:nth-child(2)') - as it was incase of next element child
+
+        and we can also use the properties of the DOM as it was incase of getElementById
+
+        el.querySelector('p .class')
+        // in queryselector we can select not only the document but also the elements if we already stores the parent or grand parent elements, and we cant do that in getElementById
+
+3. SELECTING AND MANIPULATING MULTIPLE elements
+
+    1. getElementsByClassname('class')
+        -returns a collection of all elements in the document with specified class name
+
+        *Collecction is not an array
+
+        we cant use array methods with html collection
+
+        but we can use es2015 Array.from(HTML Collection) to make HTML collection as an array
+
+    
+    forEach() method executes a provided function once for each array element
+
+    2. getelementsByTagName('tag')
+        -returns a collections of all elements in the document with the specified tagname
+
+        *returns HTML Collection
+
+    3. querySelectorAll('')
+
+        - returns a nodelist
+
+        we can use array for each method in a nodelist without transforming it into array
+
+        we can select multiple selector at the same time
+
+4. DOM styles
+
+    -allows us to change the styles of html elements dynamically
+
+    const h2 = document.querySelector('h2')
+
+    h2.style.color = 'red'
+    //the color of heading change to red
+
+    h2.style.backgroundColor = 'green'
+    //the color of background change to green
+
+    lis.style.cssText = 'color: red; background-color:green;'
+    // we use cssText for putting multiple css styles
+
+5. DOM styles and classes
+
+    1. className
+        - gets and sets the value of class attribute of the specified element
+
+        *returns string value
+
+        const h2 = document.querySelector('header h2')
+
+        h2.className = 'changeBg'
+
+        h2.className = 'changeFt'
+
+        but we have a problem because previous classname remove
+
+        h2.className = 'changeBg'
+
+        h2.className += ' changeFt'
+
+        this trick we can add those classnames without removing the first one
+
+        h2.className typeoff is a string
+
+    2.classList
+        - returns the class name(s) of an element, such as a DOMTokenList object.
+        Useful to add, remove and toggle CSS classes on an element
+
+        *classList property is read-only
+
+        const h2 = document.querySelector('header h2')
+
+        h2.className = 'changeBg'
+
+        h2.classList.add('changeFt')
+        h2.classList.remove('changeBg')
+
+        h2.classList.toggle('changeBg')
+
+6. Events
+    - actions that happen on a webpage you are programming
+
+    *Events make webpage more interactive and dynamic
+
+    go to #7 for executing events in modern way
+
+7. Event Listener
+
+    addEventListener()
+
+    - attaches an event handler to the specified element
+    * you can use multiple similar events to one element at a time
+
+    const h2 = document.querySelector('header h2')
+
+    const a = () => {
+        console.log('clicked')
+    }
+
+    const b = () => {
+        console.log('clicked b')
+    }
+
+    h2.addEventListener('click', a)
+    h2.addEventListener('click', b)
+
+    //clicked
+    //clicked b
+
+    EVENT OBJECT 
+     - When an event occurs, the event object created
+
+     *In most cases Event Object is expressed as (e)
+
+     clientX and ClientY measure the exact coordinates of the event in the page
+     clientX - shows the number of pixels from the left 
+     clientY - shows the number of pixels from the temporary
+
+     offsetX and offsetY are similar to clientX and clientY but the diffent is it measures pixels the element itself
+
+    .target - returns the element you want to manipulate
+    it is the same with the keyword "this"
+
+    go to developer.mozilla.org to see different event list
+
+8. Event Flow
+    const h2 = document.querySelector('header h2')
+
+
+
+    const a = (x, y) => {
+        console.log(x * y)
+    }
+
+
+
+    h2.addEventListener('click', () => {
+        a(5, 10)
+    })
+
+    50
+
+    const div = document.querySelector('div.wrapper')
+    const header = document.querySelector('header')
+    const h2 = document.querySelector('header h2')
+
+    div.addEventListener('click', () => {
+        console.log('from div')
+    })
+
+    header.addEventListener('click', () => {
+        console.log('from header')
+    })
+
+    h2.addEventListener('click', () => {
+        console.log('from h2')
+    })
+
+    h2
+    header
+    div 
+    event firing starts from inner elements
+
+
+
+    div.addEventListener('click', () => {
+        let delay = new Date().getTime() + 1000
+        while(new Date() < delay) {}
+        console.log('from div')
+    })
+
+    header.addEventListener('click', () => {
+        let delay = new Date().getTime() + 1000
+        while(new Date() < delay) {}
+        console.log('from header')
+    })
+
+    h2.addEventListener('click', () => {
+        let delay = new Date().getTime() + 1000
+        while(new Date() < delay) {}
+        console.log('from h2')
+    })
+
+    h2
+    header
+    div 
+    fired all of it in delay to see that h2 will fired first
+
+
+    EVENT BUBBLING - the sequence of event firing from inner to outer elements
+
+    third parameter of event listener has a false default see below
+
+    div.addEventListener('click', () => {
+        let delay = new Date().getTime() + 1000
+        while(new Date() < delay) {}
+        console.log('from div')
+    }, false)
+
+    header.addEventListener('click', () => {
+        let delay = new Date().getTime() + 1000
+        while(new Date() < delay) {}
+        console.log('from header')
+    }, false)
+
+    h2.addEventListener('click', () => {
+        let delay = new Date().getTime() + 1000
+        while(new Date() < delay) {}
+        console.log('from h2')
+    }, false)
+
+    h2
+    header
+    div 
+    nothing changes
+
+    div.addEventListener('click', () => {
+        let delay = new Date().getTime() + 1000
+        while(new Date() < delay) {}
+        console.log('from div')
+    }, true)
+
+    header.addEventListener('click', () => {
+        let delay = new Date().getTime() + 1000
+        while(new Date() < delay) {}
+        console.log('from header')
+    }, true)
+
+    h2.addEventListener('click', () => {
+        let delay = new Date().getTime() + 1000
+        while(new Date() < delay) {}
+        console.log('from h2')
+    }, true)
+
+    from div
+    from header
+    h2
+    now the sequence of event firing is from outer element to inner element
+
+    EVENT CAPTURING - this sequence of event firing is from outer to inner elements
+
+9. How to set and get attributes
+
+    1. getAttribute('attr')
+        - returns the value of the attribute with the specified name of the element
+
+        *returns value as a string
+
+        const div = document.querySelector('div.wrapper')
+        //undefined
+
+        div.getAttribute('class')
+        //'wrapper'
+
+        div.getAttribute('id')
+        //null
+
+        if that attributes doesn't exist it returns null
+
+    2. setAttribute('attr', 'value')
+        - sets the value of an attribute on the specified element
+
+        *if the attribute already exist, the value is updated
+
+        div.setAttribute('style', 'background: coral;')
+        //undefined
+
+        sets the attribute and value of elements into background coral
+
+    3. removeAttribute('attribute')
+
+        div.removeAttribute('style')
+        //undefined
+
+        the style of the attribute will removeAttribute
+
+    4. hasAttribute('attr')
+
+        it returns a boolean value
+
+        div.hasAttribute('style')
+        //false
+
+    preventDefault = it helps prevent the default when submitting button
+
+    const btn = document.getElementById('add-btn')
+    const input = document.getElementById('add-input')
+
+    btn.addEventListener('click', (e) => {
+        e.preventDefault()
+        console.log('hello world')
+        input.setAttribute('type', 'submit')
+        input.setAttribute('value', input.value)
+    })
+
+10. DOM Navigation
+
+    parentNodes = use to access parent element
+    parentNodes.parentNodes = use to access grandparent elements
+    parentElement = works the same way as parentNodes
+
+    const listitem = document.getElementById('list-item')
+
+    listitem.parentElement.style.background = 'orange'
+    //'orange'
+    - the background of the parent element change into orange
+
+    childNodes = use to access the child of an element
+    *it returns a nodelist
+    the 'text' in nodelist is the spaces we provide in htmldocument
+
+    listitem.children = returns only the child element not including the spaces we create at html document
+
+    listItem.firstChild = can be use to access the first child of element but it reads the spaces in nodelist
+
+    listItem.firstElementChild = it works in the same way but ignores white spaces
+
+    listItem.lastElementChild = it works in the same way as firstElementChild but it access the last children
+
+    listItem.previousSibling = count white space as a text nodes
+
+    listitem.previusElementSibling = to access previous sibling not including the spaces
+
+    listitem.nextElementSibling = to access next sibling not including white spaces also
+
+11. How to create elements with DOM
+
+    const newEl = document.createElement('button')
+
+    const text = document.createTextNode('Clicked')
+
+    newEl.appendChild(text)
+
+    newEl.setAttribute('style', 'display: block; margin: 10px auto; padding: 5px 10px;background: coral; color: #fff;')
+
+    console.log(newEl)
+
+    const form = document.getElementById('add')
+
+    // form.appendChild(newEl)
+
+    form.insertBefore(newEl, form.children[0])
+
+    newEl.parentElement.removeChild(newEl)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
